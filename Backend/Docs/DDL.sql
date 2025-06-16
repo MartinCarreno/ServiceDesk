@@ -128,6 +128,60 @@ INSERT INTO servicios (nom_servicio, desc_servicio, id_categoria) VALUES
 ('Biométricos de asistencia', 'Soporte para dispositivos biométricos', (SELECT id_categoria FROM categorias WHERE nom_categoria = 'Soporte de Hardware y Dispositivos')),
 ('Internet', 'Soporte para conexión a Internet', (SELECT id_categoria FROM categorias WHERE nom_categoria = 'Soporte de Hardware y Dispositivos'));
 
+-- Asumimos que el técnico creador con ID 1 ya existe en la tabla usuarios y es tipo 'agente'
+
+INSERT INTO articulos (
+    id_articulo, titulo_articulo, conten_articulo, cate_articulo, subcate_articulo,
+    visibilidad, estado_publicacion, url_documento, imagen_articulo, id_tecnico_creador
+) VALUES 
+(1, 'Cómo reiniciar un router de forma segura',
+    'Para reiniciar un router de forma segura, primero apague el dispositivo desde el botón de encendido, espere 10 segundos y vuelva a encenderlo. Esto soluciona la mayoría de problemas de conectividad.',
+    'Redes', 'Router', 'publico', TRUE,
+    'https://intranet.soporte.com/docs/reinicio_router.pdf',
+    'https://intranet.soporte.com/img/reinicio_router.png',
+    1),
+
+(2, 'Procedimiento para cambio de tóner en impresoras HP',
+    'Abra la tapa superior de la impresora, retire el tóner usado y coloque el nuevo. Asegúrese de que esté correctamente insertado y cierre la tapa. Reinicie la impresora si es necesario.',
+    'Soporte de Hardware', 'Impresoras', 'publico', TRUE,
+    'https://intranet.soporte.com/docs/cambio_toner.pdf',
+    NULL,
+    1),
+
+(3, 'Mantenimiento preventivo para notebooks',
+    'Se recomienda realizar limpieza externa semanal y limpieza interna (ventiladores y disipadores) cada 6 meses. Use aire comprimido y revise actualizaciones de BIOS y drivers.',
+    'Soporte de Hardware', 'Notebook', 'publico', TRUE,
+    NULL,
+    NULL,
+    1),
+
+(4, 'Solución de problemas de conexión WiFi',
+    'Verifique que el Access Point esté encendido. Revise que no haya conflictos de IP y asegúrese de estar usando la red correcta. Reinicie el adaptador de red si es necesario.',
+    'Redes', 'Access Point (WiFi)', 'publico', TRUE,
+    'https://intranet.soporte.com/docs/conexion_wifi.pdf',
+    NULL,
+    1),
+
+(5, 'Política de reemplazo de equipos obsoletos',
+    'Los equipos declarados como "obsoletos" deben ser reportados al área de TI para su evaluación. Si el equipo no cumple con los requerimientos mínimos, se procederá a su reemplazo.',
+    'Gestión de Activos', 'Equipos obsoletos', 'agente', TRUE,
+    NULL,
+    NULL,
+    1),
+
+(6, 'Guía para instalación de impresoras en red',
+    'Para instalar una impresora en red, acceda a "Dispositivos e impresoras" en Windows, seleccione "Agregar impresora", luego "La impresora deseada no está en la lista" y escriba la IP.',
+    'Soporte de Hardware', 'Impresoras', 'publico', TRUE,
+    NULL,
+    'https://intranet.soporte.com/img/instalacion_impresora.png',
+    1),
+
+(7, 'Cómo identificar el número de serie de un PC',
+    'El número de serie puede encontrarse en una etiqueta física en la parte trasera del PC o accediendo al símbolo del sistema (cmd) y escribiendo: wmic bios get serialnumber.',
+    'Inventario de Activos', 'PC', 'publico', TRUE,
+    NULL,
+    NULL,
+    1);
 
 INSERT INTO sla (id_sla, nom_sla, tiempo_sla) VALUES
 (1, 'SLA Incidente', 8),
