@@ -7,14 +7,15 @@ include '../../includes/session_validation.php'; // Validar sesión
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/app.css">
+    <link rel="stylesheet" href="../../assets/css/app.css">
     <title>Panel de Usuario</title>
 </head>
 <body class="dashboard">
     <nav class="navbar">
         <nav>
             <ul>
-                <li><a href="../agent/agent_dashboard.php">Inicio</a></li>
+                <li><a href="../user/user_dashboard.php">Inicio</a></li>
+                <li><a href="../mis_ticket.php">Mis Tickets</a></li>
                 <li><a href="../create_ticket_form.php">Crear Ticket</a></li>
                 <li><a href="../logout.php">Cerrar Sesión</a></li>
             </ul>
@@ -24,7 +25,7 @@ include '../../includes/session_validation.php'; // Validar sesión
 
     <header>
     <a href="../create_ticket_form.php">
-        <button>Ir a Crear Ticket</button>
+        <button>+</button>
     </a>
     </header>
 
@@ -72,7 +73,6 @@ include '../../includes/session_validation.php'; // Validar sesión
         </tbody>
     </table>
 
-    <a href="../logout.php">Cerrar sesión</a>
     </main>
     
 </body>

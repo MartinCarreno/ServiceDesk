@@ -50,6 +50,7 @@ unset($_SESSION['error']); // Limpiar el error después de mostrarlo
     </script>
 </head>
 <body>
+    
     <h1>Crear Ticket</h1>
 
     <?php if ($error): ?>
