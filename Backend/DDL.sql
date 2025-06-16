@@ -22,7 +22,6 @@ CREATE TABLE articulos (
     conten_articulo TEXT,
     cate_articulo VARCHAR(100),
     subcate_articulo VARCHAR(100),
-    fecha_articulo DATE,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   
     visibilidad VARCHAR(20) CHECK (visibilidad IN ('agente', 'publico')) DEFAULT 'publico',
     estado_publicacion BOOLEAN DEFAULT TRUE, -- Indica si el artículo está publicado o no
