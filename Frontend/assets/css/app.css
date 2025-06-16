@@ -1,17 +1,299 @@
-/* Error: Can't find stylesheet to import.
- *   ,
- * 1 | @import 'base/variables';
- *   |         ^^^^^^^^^^^^^^^^
- *   '
- *   Frontend\src\scss\app.scss 1:9  root stylesheet */
-
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a   \2577 \a 1 \2502  @import 'base/variables';\d\a   \2502          ^^^^^^^^^^^^^^^^\a   \2575 \a   Frontend\\src\\scss\\app.scss 1:9  root stylesheet";
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900");
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900");
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
 }
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #F5F5F5;
+  font-family: "Lato", sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.8;
+}
+
+p {
+  color: #000000;
+  font-size: 2rem;
+}
+
+.contenedor {
+  width: 95%;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+img,
+picture {
+  width: 100%;
+  display: block;
+}
+
+h1, h2, h3 {
+  font-family: "Lato", sans-serif;
+  margin: 2.5rem 0;
+  font-weight: 300;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3.8rem;
+}
+
+h2 {
+  font-size: 3.4rem;
+}
+
+h3 {
+  font-size: 3rem;
+}
+
+h4 {
+  font-size: 2.6rem;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #F5F5F5;
+  font-family: "Lato", sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.8;
+}
+
+p {
+  color: #000000;
+  font-size: 2rem;
+}
+
+.contenedor {
+  width: 95%;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+img,
+picture {
+  width: 100%;
+  display: block;
+}
+
+h1, h2, h3 {
+  font-family: "Lato", sans-serif;
+  margin: 2.5rem 0;
+  font-weight: 300;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3.8rem;
+}
+
+h2 {
+  font-size: 3.4rem;
+}
+
+h3 {
+  font-size: 3rem;
+}
+
+h4 {
+  font-size: 2.6rem;
+}
+
+.login {
+  background-color: #F5F5F5;
+  background: linear-gradient(360deg, rgb(2, 0, 36) 0%, rgb(9, 9, 121) 35%, rgb(0, 212, 255) 100%);
+}
+
+.contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.caja-login {
+  background: #FFFFFF;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.caja-login h1 {
+  color: #133aa5;
+}
+
+.caja-login label {
+  display: flex;
+  justify-content: left;
+  font-weight: 700;
+  color: #333333;
+}
+
+.caja-login form {
+  display: flex;
+  flex-direction: column;
+}
+
+.caja-login input[type=email],
+.caja-login input[type=password] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.caja-login input[type=email]:focus,
+.caja-login input[type=password]:focus {
+  outline: none;
+  border-color: #133aa5;
+  box-shadow: 0 0 5px rgba(19, 58, 165, 0.5);
+}
+
+.caja-login button {
+  padding: 0.75rem;
+  background-color: #133aa5;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.caja-login button:hover {
+  background-color: rgb(13.7336956522, 41.9239130435, 119.2663043478);
+}
+
+.caja-login a {
+  display: block;
+  margin-top: 1rem;
+  color: #71B100;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.caja-login a:hover {
+  text-decoration: underline;
+}
+
+.error {
+  background-color: #FF0000;
+  color: #FFFFFF;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.navbar {
+  width: 12rem;
+  background-color: #133aa5;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #FFFFFF;
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.navbar ul li {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.navbar ul li a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+  background-color: rgb(13.7336956522, 41.9239130435, 119.2663043478);
+}
+
+.main-content {
+  margin-left: 12rem;
+  padding: 2rem;
+  margin-top: 60px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  margin-left: 11.2rem;
+  width: 100%;
+  height: 60px;
+  background-color: #133aa5;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+header a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+/*# sourceMappingURL=app.css.map */
