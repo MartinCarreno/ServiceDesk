@@ -24,6 +24,11 @@ CREATE TABLE articulos (
     cate_articulo VARCHAR(100),
     subcate_articulo VARCHAR(100),
     fecha_articulo DATE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   
+    visibilidad VARCHAR(20) CHECK (visibilidad IN ('agente', 'publico')) DEFAULT 'publico',
+    estado_publicacion BOOLEAN DEFAULT TRUE, -- Indica si el artículo está publicado o no
+    url_documento TEXT,   --para links a otross documentos
+    imagen_articulo TEXT, --Para imagenes en base64 o en url
     id_tecnico_creador BIGINT,
     CONSTRAINT fk_tecnico_articulo FOREIGN KEY (id_tecnico_creador) REFERENCES usuarios(id_usuario)
 );
