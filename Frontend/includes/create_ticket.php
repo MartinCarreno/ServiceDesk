@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($response && isset($response['success']) && $response['success']) {
         // Redirigir según el tipo de usuario
         if ($_SESSION['usuario']['tipo'] === 'agente') {
-            header('Location: ../templates/agent/agent_dashboard.php');
+            header('Location: ../templates/agent/dashboard.php');
         } else {
             header('Location: ../templates/user/user_dashboard.php');
         }

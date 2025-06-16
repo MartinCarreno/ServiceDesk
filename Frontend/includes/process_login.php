@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($response['usuario']['tipo'] === 'usuario') {
             header('Location: ../templates/user/user_dashboard.php');
         } elseif ($response['usuario']['tipo'] === 'agente') {
-            header('Location: ../templates/agent/agent_dashboard.php');
+            header('Location: ../templates/agent/dashboard.php');
         } else {
             $_SESSION['error'] = 'Error: Tipo de usuario no reconocido.';
             header('Location: ../templates/login.php');

@@ -21,7 +21,7 @@ if (isset($_GET['ticket_id'])) {
     $result = json_decode($response, true);
 
     if ($result['success']) {
-        header('Location: ../templates/agent/agent_dashboard.php');
+        header('Location: ../templates/agent/dashboard.php');
     } else {
         echo 'Error: ' . $result['msg'];
     }

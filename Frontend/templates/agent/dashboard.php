@@ -1,23 +1,27 @@
+<?php
+include '../../includes/session_validation.php'; // Validar sesión
+?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/app.css">
     <title>Panel de Agente - Tickets</title>
-    
 </head>
+
 <body class="dashboard">
     <nav class="navbar">
         <nav>
             <ul>
-                <li><a href="../agent/agent_dashboard.php">Inicio</a></li>
-                <li><a href="../agent/agent_dashboard.php">Mis Ticket</a></li>
+                <li><a href="../agent/dashboard.php">Inicio</a></li>
+                <li><a href="../agent/dashboard.php">Mis Ticket</a></li>
                 <li><a href="../create_ticket_form.php">Crear Ticket</a></li>
                 <li><a href="../logout.php">Cerrar Sesión</a></li>
             </ul>
         </nav>
-
     </nav>
 
     <div class="header-actions">
@@ -25,187 +29,236 @@
             <button class="create-btn" title="Crear Nuevo Ticket">+</button>
         </a>
     </div>
-    
-    
-    
 
     <main class="main-content">
         <div class="welcome-section fade-in">
-            <h1>👋 Bienvenido, agent@example.com</h1>
+            <h1>👋 Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']['email'] ?? 'Invitado'); ?></h1>
             <p>Panel de control de tickets - Gestiona y da seguimiento a todos los tickets del sistema</p>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number"></div>
-                    <div class="stat-label">Tickets Pendientes</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">8</div>
-                    <div class="stat-label">Mis Tickets</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">25</div>
-                    <div class="stat-label">Completados Hoy</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">4.8</div>
-                    <div class="stat-label">Rating Promedio</div>
-                </div>
-            </div>
         </div>
 
         <?php
-// Obtener tickets pendientes desde el backend
-$url = 'http://localhost:3000/api/tickets/pending';
-$response = @file_get_contents($url);
-$ticketsPendientes = $response ? json_decode($response, true) : [];
-?>
-<section class="section fade-in">
-    <div class="section-header">
-        🔔 Tickets Pendientes
-    </div>
-    <div class="tickets-container">
-        <div class="ticket-grid">
-            <?php if (is_array($ticketsPendientes) && !empty($ticketsPendientes)): ?>
-                <?php foreach ($ticketsPendientes as $ticket): ?>
-                    <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
-                        <div class="ticket-header">
-                            <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
-                            <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
-                                <?php echo ucfirst($ticket['estado_ticket']); ?>
-                            </div>
-                        </div>
-                        <div class="ticket-info">
-                            <div class="info-item">
-                                <div class="info-label">Usuario</div>
-                                <div class="info-value"><?php echo htmlspecialchars($ticket['usuario'] ?? 'Desconocido'); ?></div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Servicio</div>
-                                <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? 'Desconocido'); ?></div>
-                            </div>
-                        </div>
-                        <div class="ticket-description">
-                            <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
-                        </div>
-                        <div class="timestamp">
-                            <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
-                        </div>
-                        <div class="ticket-actions">
-                            <a href="../../includes/assing_ticket.php?ticket_id=<?php echo $ticket['id_ticket']; ?>" class="btn btn-primary">👨‍💼 Atender</a>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="empty-state">
-                    <div class="empty-state-icon">📋</div>
-                    <h3>No hay tickets disponibles</h3>
-                    <p>Cuando crees nuevos tickets, aparecerán aquí</p>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
-</section>
+        // Tickets Pendientes
+        $url = 'http://localhost:3000/api/tickets/pending';
+        $response = @file_get_contents($url);
+        $ticketsPendientes = $response ? json_decode($response, true) : [];
 
-       <?php
-// Obtener tickets asignados al agente desde el backend
-$ticketsAsignados = [];
-if (isset($_SESSION['usuario']['id'])) {
-    $url = 'http://localhost:3000/api/tickets/agent/' . $_SESSION['usuario']['id'];
-    $response = @file_get_contents($url);
-    $ticketsAsignados = $response ? json_decode($response, true) : [];
-}
-?>
-<section class="section fade-in">
-    <div class="section-header">
-        👤 Mis Tickets Pendientes
-    </div>
-    <div class="tickets-container">
-        <div class="ticket-grid">
-            <?php if (is_array($ticketsAsignados) && !empty($ticketsAsignados)): ?>
-                <?php foreach ($ticketsAsignados as $ticket): ?>
-                    <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
-                        <div class="ticket-header">
-                            <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
-                            <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
-                                <?php echo ucfirst($ticket['estado_ticket']); ?>
-                            </div>
-                        </div>
-                        <div class="ticket-info">
-                            <div class="info-item">
-                                <div class="info-label">Servicio</div>
-                                <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? 'Desconocido'); ?></div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Fecha de Creación</div>
-                                <div class="info-value"><?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?></div>
-                            </div>
-                        </div>
-                        <div class="ticket-description">
-                            <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
-                        </div>
-                        <div class="timestamp">
-                            <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
-                        </div>
-                        <div class="ticket-actions">
-                            <button class="btn btn-success" onclick="finalizarTicket(<?php echo $ticket['id_ticket']; ?>, this)">✅ Finalizar</button>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="empty-state">
-                    <div class="empty-state-icon">📋</div>
-                    <h3>No tienes tickets asignados</h3>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
-</section>
+        // Mis Tickets Pendientes (asignados al agente)
+        $ticketsAsignados = [];
+        if (isset($_SESSION['usuario']['id'])) {
+            $url = 'http://localhost:3000/api/tickets/agent/' . $_SESSION['usuario']['id'];
+            $response = @file_get_contents($url);
+            $ticketsAsignados = $response ? json_decode($response, true) : [];
+        }
 
-        <!-- Mis Tickets -->
+        // Mis Tickets (creados por el agente)
+        $ticketsCreados = [];
+        if (isset($_SESSION['usuario']['id'])) {
+            $url = 'http://localhost:3000/api/tickets/user/' . $_SESSION['usuario']['id'];
+            $response = @file_get_contents($url);
+            $ticketsCreados = $response ? json_decode($response, true) : [];
+        }
+
+        // Tickets Finalizados (asignados al agente y finalizados)
+        $ticketsFinalizados = [];
+        if (isset($_SESSION['usuario']['id'])) {
+            $url = 'http://localhost:3000/api/tickets/agent/' . $_SESSION['usuario']['id'] . '?estado=finalizado';
+            $response = @file_get_contents($url);
+            $ticketsFinalizados = array_filter($ticketsAsignados, function ($t) {
+                return isset($t['estado_ticket']) && $t['estado_ticket'] === 'finalizado';
+            });
+        }
+        ?>
+
+        <!-- Tickets Pendientes -->
+        <section class="section fade-in">
+            <div class="section-header">
+                🔔 Tickets Pendientes
+            </div>
+            <div class="tickets-container">
+                <div class="ticket-grid">
+                    <?php if (is_array($ticketsPendientes) && !empty($ticketsPendientes)): ?>
+                        <?php foreach ($ticketsPendientes as $ticket): ?>
+                            <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
+                                <div class="ticket-header">
+                                    <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
+                                    <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
+                                        <?php echo ucfirst($ticket['estado_ticket']); ?>
+                                    </div>
+                                </div>
+                                <div class="ticket-info">
+                                    <div class="info-item">
+                                        <div class="info-label">Usuario</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($ticket['usuario'] ?? $ticket['id_usuario'] ?? 'Desconocido'); ?></div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Servicio</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? $ticket['id_sla'] ?? 'Desconocido'); ?></div>
+                                    </div>
+                                </div>
+                                <div class="ticket-description">
+                                    <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
+                                </div>
+                                <div class="timestamp">
+                                    <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
+                                </div>
+                                <div class="ticket-actions">
+                                    <a href="../../includes/assing_ticket.php?ticket_id=<?php echo $ticket['id_ticket']; ?>" class="btn btn-primary">👨‍💼 Atender</a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <h3>No hay tickets disponibles</h3>
+                            <p>Cuando crees nuevos tickets, aparecerán aquí</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mis Tickets Pendientes -->
+        <section class="section fade-in">
+            <div class="section-header">
+                👤 Mis Tickets Pendientes
+            </div>
+            <div class="tickets-container">
+                <div class="ticket-grid">
+                    <?php if (is_array($ticketsAsignados) && !empty($ticketsAsignados)): ?>
+                        <?php foreach ($ticketsAsignados as $ticket): ?>
+                            <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
+                                <div class="ticket-header">
+                                    <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
+                                    <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
+                                        <?php echo ucfirst($ticket['estado_ticket']); ?>
+                                    </div>
+                                </div>
+                                <div class="ticket-info">
+                                    <div class="info-item">
+                                        <div class="info-label">Servicio</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? $ticket['id_sla'] ?? 'Desconocido'); ?></div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Fecha de Creación</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?></div>
+                                    </div>
+                                </div>
+                                <div class="ticket-description">
+                                    <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
+                                </div>
+                                <div class="timestamp">
+                                    <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
+                                </div>
+                                <div class="ticket-actions">
+                                    <button class="btn btn-success" onclick="finalizarTicket(<?php echo $ticket['id_ticket']; ?>, this)">✅ Finalizar</button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <h3>No tienes tickets asignados</h3>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mis Tickets Creados -->
         <section class="section fade-in">
             <div class="section-header">
                 📋 Mis Tickets Creados
             </div>
             <div class="tickets-container">
                 <div class="ticket-grid">
-                    <!-- Sample User Ticket -->
-                    <div class="ticket-card priority-low">
-                        <div class="ticket-header">
-                            <div class="ticket-id">#TK-004</div>
-                            <div class="ticket-status status-completed">Completado</div>
-                        </div>
-                        <div class="ticket-info">
-                            <div class="info-item">
-                                <div class="info-label">Servicio</div>
-                                <div class="info-value">SLA Básico</div>
+                    <?php if (is_array($ticketsCreados) && !empty($ticketsCreados)): ?>
+                        <?php foreach ($ticketsCreados as $ticket): ?>
+                            <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
+                                <div class="ticket-header">
+                                    <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
+                                    <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
+                                        <?php echo ucfirst($ticket['estado_ticket']); ?>
+                                    </div>
+                                </div>
+                                <div class="ticket-info">
+                                    <div class="info-item">
+                                        <div class="info-label">Servicio</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? $ticket['id_sla'] ?? 'Desconocido'); ?></div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Fecha de Creación</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?></div>
+                                    </div>
+                                </div>
+                                <div class="ticket-description">
+                                    <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
+                                </div>
+                                <div class="timestamp">
+                                    <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
+                                </div>
+                                <div class="ticket-actions">
+                                    <a href="#" class="btn btn-primary">👁️ Ver Detalles</a>
+                                </div>
                             </div>
-                            <div class="info-item">
-                                <div class="info-label">Fecha de Creación</div>
-                                <div class="info-value">2024-01-14 14:20</div>
-                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <h3>No tienes tickets creados</h3>
                         </div>
-                        <div class="ticket-description">
-                            Solicitud de cambio de contraseña para acceso al portal de empleados.
-                        </div>
-                        <div class="timestamp">Completado ayer</div>
-                        <div class="ticket-actions">
-                            <a href="#" class="btn btn-primary">👁️ Ver Detalles</a>
-                        </div>
-                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
 
-                    <!-- Empty State Example -->
-                    <div class="empty-state" style="display: none;">
-                        <div class="empty-state-icon">📋</div>
-                        <h3>No hay tickets disponibles</h3>
-                        <p>Cuando crees nuevos tickets, aparecerán aquí</p>
-                    </div>
+
+
+        <!-- Tickets Finalizados -->
+        <section class="section fade-in" id="finalizados-section">
+            <div class="section-header">
+                🏁 Tickets Finalizados
+            </div>
+            <div class="tickets-container">
+                <div class="ticket-grid" id="finalizados-grid">
+                    <?php if (is_array($ticketsFinalizados) && !empty($ticketsFinalizados)): ?>
+                        <?php foreach ($ticketsFinalizados as $ticket): ?>
+                            <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
+                                <div class="ticket-header">
+                                    <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
+                                    <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
+                                        <?php echo ucfirst($ticket['estado_ticket']); ?>
+                                    </div>
+                                </div>
+                                <div class="ticket-info">
+                                    <div class="info-item">
+                                        <div class="info-label">Servicio</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? $ticket['id_sla'] ?? 'Desconocido'); ?></div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Fecha de Creación</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?></div>
+                                    </div>
+                                </div>
+                                <div class="ticket-description">
+                                    <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
+                                </div>
+                                <div class="timestamp">
+                                    <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="empty-state">
+                            <div class="empty-state-icon">✅</div>
+                            <h3>No tienes tickets finalizados</h3>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
 
         <div style="text-align: center; margin: 2rem 0;">
-            <a href="logout.php" class="btn btn-danger">🚪 Cerrar Sesión</a>
+            <a href="../logout.php" class="btn btn-danger">🚪 Cerrar Sesión</a>
         </div>
     </main>
 
@@ -232,14 +285,13 @@ if (isset($_SESSION['usuario']['id'])) {
             observer.observe(section);
         });
 
-        // Ticket finalization function (same as original)
+        // Ticket finalization function
         async function finalizarTicket(ticketId, button) {
             if (!confirm('¿Estás seguro de que deseas finalizar este ticket?')) {
                 return;
             }
 
             try {
-                // Add loading state
                 const originalText = button.innerHTML;
                 button.innerHTML = '⏳ Procesando...';
                 button.disabled = true;
@@ -251,15 +303,25 @@ if (isset($_SESSION['usuario']['id'])) {
                 const result = await response.json();
 
                 if (result.success) {
-                    // Animate card removal
+                    // Animar y mover el ticket a la sección de finalizados
                     const card = button.closest('.ticket-card');
                     card.style.transform = 'scale(0.95)';
                     card.style.opacity = '0.5';
-                    
+
                     setTimeout(() => {
-                        card.remove();
-                        
-                        // Show success notification
+                        // Cambiar el estado visualmente
+                        card.querySelector('.ticket-status').textContent = 'Finalizado';
+                        card.querySelector('.ticket-status').className = 'ticket-status status-finalizado';
+                        // Eliminar el botón de finalizar
+                        const actions = card.querySelector('.ticket-actions');
+                        if (actions) actions.remove();
+
+                        // Mover el card a la sección de finalizados
+                        document.getElementById('finalizados-grid').prepend(card);
+
+                        // Restaurar estilos
+                        card.style.transform = '';
+                        card.style.opacity = '';
                         showNotification('✅ Ticket finalizado correctamente', 'success');
                     }, 300);
                 } else {
@@ -291,18 +353,18 @@ if (isset($_SESSION['usuario']['id'])) {
                 max-width: 300px;
                 box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             `;
-            
+
             const colors = {
                 success: 'linear-gradient(135deg, #51cf66, #40c057)',
                 error: 'linear-gradient(135deg, #ff6b6b, #ee5a52)',
                 info: 'linear-gradient(135deg, #667eea, #764ba2)'
             };
-            
+
             notification.style.background = colors[type] || colors.info;
             notification.textContent = message;
-            
+
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => notification.remove(), 300);
@@ -322,11 +384,7 @@ if (isset($_SESSION['usuario']['id'])) {
             }
         `;
         document.head.appendChild(style);
-
-        // Auto-refresh tickets every 30 seconds (optional)
-        // setInterval(() => {
-        //     window.location.reload();
-        // }, 30000);
     </script>
 </body>
+
 </html>
