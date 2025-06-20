@@ -94,128 +94,6 @@ a {
 img,
 picture {
   width: 100%;
-  display: block;
-}
-
-h1, h2, h3 {
-  font-family: "Lato", sans-serif;
-  margin: 2.5rem 0;
-  font-weight: 300;
-  text-align: center;
-}
-
-h1 {
-  font-size: 3.8rem;
-}
-
-h2 {
-  font-size: 3.4rem;
-}
-
-h3 {
-  font-size: 3rem;
-}
-
-h4 {
-  font-size: 2.6rem;
-}
-
-.login {
-  background-color: #F5F5F5;
-  background: linear-gradient(360deg, rgb(2, 0, 36) 0%, rgb(9, 9, 121) 35%, rgb(0, 212, 255) 100%);
-}
-
-.contenedor {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.caja-login {
-  background: #FFFFFF;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.caja-login h1 {
-  color: #133aa5;
-}
-
-.caja-login label {
-  display: flex;
-  justify-content: left;
-  font-weight: 700;
-  color: #333333;
-}
-
-.caja-login form {
-  display: flex;
-  flex-direction: column;
-}
-
-.caja-login input[type=email],
-.caja-login input[type=password] {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #333333;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.caja-login input[type=email]:focus,
-.caja-login input[type=password]:focus {
-  outline: none;
-  border-color: #133aa5;
-  box-shadow: 0 0 5px rgba(19, 58, 165, 0.5);
-}
-
-.caja-login button {
-  padding: 0.75rem;
-  background-color: #133aa5;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 4px;
-  font-size: 1.3rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.caja-login button:hover {
-  background-color: rgb(13.7336956522, 41.9239130435, 119.2663043478);
-}
-
-.caja-login a {
-  display: block;
-  margin-top: 1rem;
-  color: #71B100;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.caja-login a:hover {
-  text-decoration: underline;
-}
-
-.error {
-  background-color: #FF0000;
-  color: #FFFFFF;
-  padding: 1rem;
-  border-radius: 4px;
-  margin-top: 1rem;
-  font-size: 1.2rem;
-  text-align: center;
-}
-
-.dashboard {
-  display: flex;
-  height: 100vh;
-}
 
 .navbar {
   width: 12rem;
@@ -295,5 +173,6 @@ header a {
   font-size: 1.2rem;
   transition: color 0.3s ease;
 }
+
 
 /*# sourceMappingURL=app.css.map */

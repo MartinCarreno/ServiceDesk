@@ -18,7 +18,7 @@ if (isset($_GET['ticket_id'])) {
 
     if ($result['success']) {
         echo json_encode(['success' => true, 'msg' => 'Ticket finalizado correctamente.']);
-        header('Location: ../templates/agent/agent_dashboard.php');
+        header('Location: ../templates/agent/dashboard.php');
     } else {
         echo 'Error: ' . ($result['msg'] ?? 'No se pudo finalizar el ticket.');
     }
