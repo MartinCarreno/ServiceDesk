@@ -3,27 +3,495 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/css/app.css">
     <title>Panel de Agente - Tickets</title>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #2c3e50;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 64px;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            background: #f8fafc;
+            color: #4a90e2;
+        }
+
+        .create-ticket-btn {
+            background: #4a90e2;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .create-ticket-btn:hover {
+            background: #357abd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .welcome-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .welcome-section p {
+            color: #64748b;
+            font-size: 18px;
+            margin-bottom: 32px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e1e8ed;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #4a90e2;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Tickets Container */
+        .tickets-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .ticket-grid {
+            display: grid;
+            gap: 0;
+        }
+
+        /* Ticket Card */
+        .ticket-card {
+            padding: 24px;
+            border-bottom: 1px solid #e1e8ed;
+            transition: all 0.2s ease;
+        }
+
+        .ticket-card:last-child {
+            border-bottom: none;
+        }
+
+        .ticket-card:hover {
+            background: #f8fafc;
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .ticket-id {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .ticket-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-assigned {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        /* Priority Indicators */
+        .priority-high {
+            border-left: 4px solid #ef4444;
+        }
+
+        .priority-medium {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .priority-low {
+            border-left: 4px solid #10b981;
+        }
+
+        /* Ticket Info */
+        .ticket-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        /* Ticket Description */
+        .ticket-description {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 8px;
+            color: #475569;
+            margin-bottom: 16px;
+            border-left: 3px solid #e1e8ed;
+        }
+
+        .timestamp {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        /* Ticket Actions */
+        .ticket-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #4a90e2;
+            color: white;
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #357abd;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-success {
+            background: #a8e6cf;
+            color: #2d5a3d;
+            box-shadow: 0 2px 8px rgba(168, 230, 207, 0.3);
+        }
+
+        .btn-success:hover {
+            background: #8dd3c7;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+            transform: translateY(-1px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        /* Logout Section */
+        .logout-section {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+                padding: 16px;
+            }
+
+            .nav-list {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .welcome-section {
+                padding: 24px 16px;
+            }
+
+            .welcome-section h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .ticket-card {
+                padding: 16px;
+            }
+
+            .ticket-info {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .ticket-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            max-width: 350px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #a8e6cf, #88d8a3);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <ul>
-            <li><a href="../agent/agent_dashboard.php">🏠 Inicio</a></li>
-            <li><a href="../create_ticket_form.php">🎫 Crear Ticket</a></li>
-            <li><a href="../logout.php">🚪 Cerrar Sesión</a></li>
-        </ul>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="../agent/agent_dashboard.php" class="nav-link">
+                        <span>🏠</span> Inicio
+                    </a></li>
+                    <li><a href="../create_ticket_form.php" class="nav-link">
+                        <span>🎫</span> Crear Ticket
+                    </a></li>
+                    <li><a href="../logout.php" class="nav-link">
+                        <span>🚪</span> Cerrar Sesión
+                    </a></li>
+                </ul>
+            </nav>
+            <a href="create_ticket_form.php" class="create-ticket-btn">
+                <span>+</span> Nuevo Ticket
+            </a>
+        </div>
     </header>
-    
-    <div class="header-actions">
-        <a href="create_ticket_form.php">
-            <button class="create-btn" title="Crear Nuevo Ticket">+</button>
-        </a>
-    </div>
 
+    <!-- Main Content -->
     <main class="main-content">
-        <div class="welcome-section fade-in">
+        <!-- Welcome Section -->
+        <section class="welcome-section fade-in">
             <h1>👋 Bienvenido, agent@example.com</h1>
             <p>Panel de control de tickets - Gestiona y da seguimiento a todos los tickets del sistema</p>
             
@@ -45,12 +513,12 @@
                     <div class="stat-label">Rating Promedio</div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Tickets Pendientes -->
         <section class="section fade-in">
             <div class="section-header">
-                🔔 Tickets Pendientes
+                <span>🔔</span> Tickets Pendientes
             </div>
             <div class="tickets-container">
                 <div class="ticket-grid">
@@ -110,7 +578,7 @@
         <!-- Mis Tickets Pendientes -->
         <section class="section fade-in">
             <div class="section-header">
-                👤 Mis Tickets Pendientes
+                <span>👤</span> Mis Tickets Pendientes
             </div>
             <div class="tickets-container">
                 <div class="ticket-grid">
@@ -143,10 +611,10 @@
             </div>
         </section>
 
-        <!-- Mis Tickets -->
+        <!-- Mis Tickets Creados -->
         <section class="section fade-in">
             <div class="section-header">
-                📋 Mis Tickets Creados
+                <span>📋</span> Mis Tickets Creados
             </div>
             <div class="tickets-container">
                 <div class="ticket-grid">
@@ -185,7 +653,8 @@
             </div>
         </section>
 
-        <div style="text-align: center; margin: 2rem 0;">
+        <!-- Logout Section -->
+        <div class="logout-section">
             <a href="logout.php" class="btn btn-danger">🚪 Cerrar Sesión</a>
         </div>
     </main>
@@ -200,20 +669,16 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('visible');
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.section').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(30px)';
-            section.style.transition = 'all 0.6s ease';
-            observer.observe(section);
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
         });
 
-        // Ticket finalization function (same as original)
+        // Ticket finalization function
         async function finalizarTicket(ticketId, button) {
             if (!confirm('¿Estás seguro de que deseas finalizar este ticket?')) {
                 return;
@@ -259,27 +724,7 @@
         // Notification system
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 1rem 1.5rem;
-                border-radius: 10px;
-                color: white;
-                font-weight: 500;
-                z-index: 10000;
-                animation: slideIn 0.3s ease;
-                max-width: 300px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            `;
-            
-            const colors = {
-                success: 'linear-gradient(135deg, #51cf66, #40c057)',
-                error: 'linear-gradient(135deg, #ff6b6b, #ee5a52)',
-                info: 'linear-gradient(135deg, #667eea, #764ba2)'
-            };
-            
-            notification.style.background = colors[type] || colors.info;
+            notification.className = `notification ${type}`;
             notification.textContent = message;
             
             document.body.appendChild(notification);
@@ -290,24 +735,18 @@
             }, 3000);
         }
 
-        // Add CSS for notification animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Auto-refresh tickets every 30 seconds (optional)
-        // setInterval(() => {
-        //     window.location.reload();
-        // }, 30000);
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trigger initial fade-in for elements in viewport
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach(element => {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top < window.innerHeight) {
+                        element.classList.add('visible');
+                    }
+                });
+            }, 100);
+        });
     </script>
 </body>
 </html>
