@@ -42,6 +42,11 @@ const Ticket = sequelize.define('Ticket', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
     },
+
+    mensaje_finalizacion: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+    }
 }, {
     tableName: 'tickets',
     timestamps: false,

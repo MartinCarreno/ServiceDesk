@@ -73,6 +73,7 @@ CREATE TABLE tickets (
     id_sla BIGINT,
     fe_lim_ticket TIMESTAMP,
     cump_sla BOOLEAN,
+    mensaje_finalizacion TEXT NOT NULL,
     CONSTRAINT fk_usuario_ticket FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     CONSTRAINT fk_agente_ticket FOREIGN KEY (id_agente) REFERENCES usuarios(id_usuario),
     CONSTRAINT fk_articulo_ticket FOREIGN KEY (id_articulo) REFERENCES articulos(id_articulo),

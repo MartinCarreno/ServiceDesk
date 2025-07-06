@@ -124,39 +124,48 @@ include '../../includes/session_validation.php'; // Validar sesión
         <!-- Mis Tickets Pendientes -->
         <section class="section fade-in">
             <div class="section-header">
-                👤 Mis Tickets Pendientes
+                👤 Mis Tickets Asignados Pendientes
             </div>
             <div class="tickets-container">
                 <div class="ticket-grid">
                     <?php if (is_array($ticketsAsignados) && !empty($ticketsAsignados)): ?>
                         <?php foreach ($ticketsAsignados as $ticket): ?>
-                            <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
-                                <div class="ticket-header">
-                                    <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
-                                    <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
-                                        <?php echo ucfirst($ticket['estado_ticket']); ?>
+                            
+                            <?php if ($ticket['estado_ticket'] === 'en proceso'): ?>
+                                <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
+                                    <div class="ticket-header">
+                                        <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
+                                        <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
+                                            <?php echo ucfirst($ticket['estado_ticket']); ?>
+                                        </div>
+                                    </div>
+                                    <div class="ticket-info">
+                                        <div class="info-item">
+                                            <div class="info-label">Servicio</div>
+                                            <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? $ticket['id_sla'] ?? 'Desconocido'); ?></div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Fecha de Creación</div>
+                                            <div class="info-value"><?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="ticket-description">
+                                        <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
+                                    </div>
+                                    <div class="timestamp">
+                                        <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
+                                    </div>
+                                    <div class="ticket-actions">
+                                        <button class="btn btn-success" onclick="finalizarTicket(<?php echo $ticket['id_ticket']; ?>, this)">✅ Finalizar</button>
                                     </div>
                                 </div>
-                                <div class="ticket-info">
-                                    <div class="info-item">
-                                        <div class="info-label">Servicio</div>
-                                        <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? $ticket['id_sla'] ?? 'Desconocido'); ?></div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Fecha de Creación</div>
-                                        <div class="info-value"><?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?></div>
-                                    </div>
+                                
+                                <?php elseif(empty($ticketsAsignados)): ?>
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">📋</div>
+                                    <h3>No tienes tickets asignados</h3>
                                 </div>
-                                <div class="ticket-description">
-                                    <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
-                                </div>
-                                <div class="timestamp">
-                                    <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
-                                </div>
-                                <div class="ticket-actions">
-                                    <button class="btn btn-success" onclick="finalizarTicket(<?php echo $ticket['id_ticket']; ?>, this)">✅ Finalizar</button>
-                                </div>
-                            </div>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <div class="empty-state">
@@ -201,7 +210,7 @@ include '../../includes/session_validation.php'; // Validar sesión
                                     <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
                                 </div>
                                 <div class="ticket-actions">
-                                    <a href="#" class="btn btn-primary">👁️ Ver Detalles</a>
+                                    <a href="detalle_ticket.php" class="btn btn-primary">👁️ Ver Detalles</a>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -289,9 +298,8 @@ include '../../includes/session_validation.php'; // Validar sesión
 
         // Ticket finalization function
         async function finalizarTicket(ticketId, button) {
-            if (!confirm('¿Estás seguro de que deseas finalizar este ticket?')) {
-                return;
-            }
+            const mensaje = prompt('Deja un mensaje de cierre para este ticket:');
+            if (mensaje === null) return;
 
             try {
                 const originalText = button.innerHTML;
@@ -299,7 +307,13 @@ include '../../includes/session_validation.php'; // Validar sesión
                 button.disabled = true;
 
                 const response = await fetch(`../../includes/finalize_ticket.php?ticket_id=${ticketId}`, {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        mensaje_finalizacion: mensaje
+                    })
                 });
 
                 const result = await response.json();

@@ -5,103 +5,147 @@
 @import '../base/globales';
 
 .login {
-    background-color: $background-color;
-    background: $background-color-gradient-azul;
-}
-
-// Contenedor principal del login
-.contenedor {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: $background-color;
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-
-
-// Caja del formulario de login
-.caja-login {
-  background: $blanco;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.contenedor {
   width: 100%;
   max-width: 400px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
 }
 
-// Título del formulario
+.caja-login {
+  background: $blanco;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 400px;
+}
+
 .caja-login h1 {
-  
-  color: $primario;
+  color: #333;
+  font-size: 32px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: -0.5px;
 }
 
 .caja-login label {
-    display: flex;
-    justify-content: left;
-    font-weight: $bold;
-    color: $grisOscuro;
-}
-// Estilos para el formulario
-.caja-login form {
-  display: flex;
-  flex-direction: column;
+  display: block;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
-// Estilos para los inputs
 .caja-login input[type="email"],
 .caja-login input[type="password"] {
   width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid $grisOscuro;
-  border-radius: 4px;
-  font-size: 1.3rem;
+  padding: 12px 16px;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+  background: #fafafa;
+  &:focus {
+    outline: none;
+    border-color: #4a90e2;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  }
 }
 
-.caja-login input[type="email"]:focus,
-.caja-login input[type="password"]:focus {
-  outline: none;
-  border-color: $primario;
-  box-shadow: 0 0 5px rgba($primario, 0.5);
-}
-
-// Botón de login
-.caja-login button {
-  padding: 0.75rem;
-  background-color: $primario;
-  color: $blanco;
+.caja-login button[type="submit"] {
+  width: 100%;
+  padding: 14px 24px;
+  background: #4a90e2;
+  color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 1.3rem;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.caja-login button:hover {
-  background-color: darken($primario, 10%);
-}
-
-// Enlace para recuperar contraseña
-.caja-login a {
-  display: block;
-  margin-top: 1rem;
-  color: $verde;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.caja-login a:hover {
-  text-decoration: underline;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+  &:hover {
+    background: #357abd;
+    transform: translateY(-1px);
+    box-shadow: 0px 6px 16px rgba(0,0,0,0.1);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
 }
 
 .error {
-    
-    background-color: $rojo;
-    color: $blanco;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    text-align: center;
+  background: #fee;
+  color: #c53030;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-top: 16px;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #fed7d7;
+}
+
+.success {
+  background: #a8e6cf;
+  color: #2d5a3d;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-top: 16px;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #9dd9c3;
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .contenedor {
+    padding: 0 16px;
+  }
+  .caja-login {
+    padding: 32px 24px;
+  }
+  .caja-login h1 {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+  .caja-login input[type="email"],
+  .caja-login input[type="password"] {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+  .caja-login button[type="submit"] {
+    padding: 16px 24px;
+  }
+}
+
+// Accesibilidad
+.caja-login input[type="email"]:focus-visible,
+.caja-login input[type="password"]:focus-visible,
+.caja-login button[type="submit"]:focus-visible {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
 }

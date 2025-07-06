@@ -26,6 +26,7 @@ router.post('/create', async (req, res) => {
             id_sla: sla_id,
             fe_lim_ticket: new Date(Date.now() + (sla_id === 1 ? 8 : 24) * 60 * 60 * 1000), // SLA en horas
             cump_sla: false,
+            mensaje_finalizacion: null, // Inicialmente no hay mensaje de finalización
         });
 
         res.status(201).json({ success: true, ticket: nuevoTicket });
@@ -136,7 +137,7 @@ router.get('/agent/:id', async (req, res) => {
 router.post('/finalize/:id', async (req, res) => {
     try {
         const { id } = req.params;
-
+        const { mensaje_finalizacion } = req.body;
         // Buscar el ticket por ID
         const ticket = await Ticket.findByPk(id);
         if (!ticket) {
@@ -144,8 +145,13 @@ router.post('/finalize/:id', async (req, res) => {
         }
 
         // Actualizar el estado del ticket a "finalizado"
+        const ahora = new Date();
+        const cumpleSLA = ahora <= ticket.fe_lim_ticket;
+
         ticket.estado_ticket = 'finalizado';
-        ticket.fe_fin_ticket = new Date();
+        ticket.fe_fin_ticket = ahora;
+        ticket.cump_sla = cumpleSLA;
+        ticket.mensaje_finalizacion = mensaje_finalizacion;
         await ticket.save();
 
         res.json({ success: true, msg: 'Ticket finalizado correctamente.' });
