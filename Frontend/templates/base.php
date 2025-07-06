@@ -14,8 +14,11 @@ include '../../includes/session_validation.php'; // Validar sesión
     <nav class="navbar">
         <nav>
             <ul>
-                <li><a href="../agent/agent_dashboard.php">Inicio</a></li>
-                <li><a href="../mis_ticket.php">Mis Tickets</a></li>
+                <li><a href="../agent/dashboard.php">Inicio</a></li>
+                <li><a href="../agent/mis_tickets.php">Mis Ticket</a></li>
+                <li><a href="../agent/mis_tickets.php">Tickets Pendientes</a></li>
+                <li><a href="../agent/mis_tickets.php">Tickets finalizados</a></li>
+                <li><a href="../agent/mis_tickets.php">Articulos</a></li>
                 <li><a href="../create_ticket_form.php">Crear Ticket</a></li>
                 <li><a href="../logout.php">Cerrar Sesión</a></li>
             </ul>

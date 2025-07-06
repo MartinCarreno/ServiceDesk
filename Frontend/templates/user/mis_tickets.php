@@ -9,19 +9,17 @@ include '../../includes/session_validation.php'; // Validar sesión
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/app.css">
-    <title>Panel de Agente - Tickets</title>
+    <title>Panel de Usuario - Tickets</title>
 </head>
 
 <body class="dashboard">
     <nav class="navbar">
         <nav>
             <ul>
-                <li><a href="../agent/dashboard.php">Inicio</a></li>
-                <li><a href="../agent/mis_tickets.php">Mis Ticket</a></li>
-                <li><a href="../agent/mis_tickets.php">Tickets Pendientes</a></li>
-                <li><a href="../agent/mis_tickets_asignados.php">Tickets Asignados</a></li>
-                <li><a href="../agent/tickets_finalizados.php">Tickets finalizados</a></li>
-                <li><a href="../agent/mis_tickets.php">Articulos</a></li>
+                <li><a href="../user/user_dashboard.php">Inicio</a></li>
+                <li><a href="../user/mis_tickets.php">Mis Ticket</a></li>
+                <li><a href="../user/tickets_finalizados.php">Tickets finalizados</a></li>
+                <li><a href="../user/articulos.php">Articulos</a></li>
                 <li><a href="../create_ticket_form.php">Crear Ticket</a></li>
                 <li><a href="../logout.php">Cerrar Sesión</a></li>
             </ul>
@@ -43,7 +41,7 @@ include '../../includes/session_validation.php'; // Validar sesión
         <?php
         
 
-        // Mis Tickets (creados por el agente)
+        // Mis Tickets (creados por el user)
         $ticketsCreados = [];
         if (isset($_SESSION['usuario']['id'])) {
             $url = 'http://localhost:3000/api/tickets/user/' . $_SESSION['usuario']['id'];

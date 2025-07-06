@@ -9,7 +9,7 @@ include '../../includes/session_validation.php'; // Validar sesión
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/app.css">
-    <title>Panel de Agente - Tickets</title>
+    <title>Panel de Agente - Tickets Finalizados</title>
 </head>
 
 <body class="dashboard">
@@ -43,7 +43,7 @@ include '../../includes/session_validation.php'; // Validar sesión
         <?php
         
 
-        // Mis Tickets (creados por el agente)
+        // Mis Tickets (creados por el usuario)
         $ticketsCreados = [];
         if (isset($_SESSION['usuario']['id'])) {
             $url = 'http://localhost:3000/api/tickets/user/' . $_SESSION['usuario']['id'];
@@ -51,19 +51,24 @@ include '../../includes/session_validation.php'; // Validar sesión
             $ticketsCreados = $response ? json_decode($response, true) : [];
         }
 
-        
+        // Tickets Finalizados (creados por el usuario y finalizados)
+        $ticketsFinalizados = [];
+        if (!empty($ticketsCreados)) {
+            $ticketsFinalizados = array_filter($ticketsCreados, function($t) {
+                return isset($t['estado_ticket']) && $t['estado_ticket'] === 'finalizado';
+            });
+        }
         ?>
 
-
-        <!-- Mis Tickets Creados -->
-        <section class="section fade-in">
+        <!-- Tickets Finalizados -->
+        <section class="section fade-in" id="finalizados-section">
             <div class="section-header">
-                📋 Mis Tickets Creados
+                🏁 Tickets Finalizados
             </div>
             <div class="tickets-container">
-                <div class="ticket-grid">
-                    <?php if (is_array($ticketsCreados) && !empty($ticketsCreados)): ?>
-                        <?php foreach ($ticketsCreados as $ticket): ?>
+                <div class="ticket-grid" id="finalizados-grid">
+                    <?php if (is_array($ticketsFinalizados) && !empty($ticketsFinalizados)): ?>
+                        <?php foreach ($ticketsFinalizados as $ticket): ?>
                             <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
                                 <div class="ticket-header">
                                     <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
@@ -87,15 +92,12 @@ include '../../includes/session_validation.php'; // Validar sesión
                                 <div class="timestamp">
                                     <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
                                 </div>
-                                <div class="ticket-actions">
-                                    <a href="#" class="btn btn-primary">👁️ Ver Detalles</a>
-                                </div>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <div class="empty-state">
-                            <div class="empty-state-icon">📋</div>
-                            <h3>No tienes tickets creados</h3>
+                            <div class="empty-state-icon">✅</div>
+                            <h3>No tienes tickets finalizados</h3>
                         </div>
                     <?php endif; ?>
                 </div>

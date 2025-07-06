@@ -17,7 +17,11 @@ include '../../includes/session_validation.php'; // Validar sesión
         <nav>
             <ul>
                 <li><a href="../agent/dashboard.php">Inicio</a></li>
-                <li><a href="../agent/dashboard.php">Mis Ticket</a></li>
+                <li><a href="../agent/mis_tickets.php">Mis Ticket</a></li>
+                <li><a href="../agent/tickets_pendientes.php">Tickets Pendientes</a></li>
+                <li><a href="../agent/mis_tickets_asignados.php">Tickets Asignados</a></li>
+                <li><a href="../agent/tickets_finalizados.php">Tickets finalizados</a></li>
+                <li><a href="../agent/articulos.php">Articulos</a></li>
                 <li><a href="../create_ticket_form.php">Crear Ticket</a></li>
                 <li><a href="../logout.php">Cerrar Sesión</a></li>
             </ul>
@@ -257,9 +261,7 @@ include '../../includes/session_validation.php'; // Validar sesión
             </div>
         </section>
 
-        <div style="text-align: center; margin: 2rem 0;">
-            <a href="../logout.php" class="btn btn-danger">🚪 Cerrar Sesión</a>
-        </div>
+
     </main>
 
     <script>

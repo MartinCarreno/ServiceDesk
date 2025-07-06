@@ -13,249 +13,32 @@ unset($_SESSION['error']); // Limpiar el error después de mostrarlo
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/app.css">
     <title>Crear Ticket</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-
-        .form-container {
-            padding: 40px;
-        }
-
-        .error-message {
-            background: #fee;
-            color: #c33;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #c33;
-            margin-bottom: 25px;
-            font-weight: 500;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 1rem;
-        }
-
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e6ed;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 20px;
-            margin-top: 8px;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            padding: 10px 15px;
-            border: 2px solid #e0e6ed;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .radio-option:hover {
-            border-color: #3498db;
-            background: #f8f9fa;
-        }
-
-        .radio-option input[type="radio"] {
-            margin-right: 8px;
-            transform: scale(1.2);
-        }
-
-        .radio-option input[type="radio"]:checked + .radio-label {
-            color: #3498db;
-            font-weight: 600;
-        }
-
-        .radio-option:has(input:checked) {
-            border-color: #3498db;
-            background: #f0f8ff;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .service-container {
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .service-container.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            min-width: 120px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
-        }
-
-        .btn-secondary {
-            background: #ecf0f1;
-            color: #2c3e50;
-            border: 2px solid #bdc3c7;
-        }
-
-        .btn-secondary:hover {
-            background: #d5dbdb;
-            border-color: #95a5a6;
-        }
-
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid #3498db;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 10px;
-            }
-
-            .header {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .form-container {
-                padding: 20px;
-            }
-
-            .radio-group {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .button-group {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
     <script>
+        // Mostrar el selector de tipo de ticket solo si hay categoría seleccionada
+        function cargarTicketTipo() {
+            const categoriaId = document.getElementById('categoria').value;
+            const ticketContainer = document.getElementById('ticket-container');
+            const servicioContainer = document.getElementById('servicio-container');
+            // Oculta el selector de servicio y resetea su valor
+            servicioContainer.classList.add('hidden');
+            servicioContainer.classList.remove('show');
+            document.getElementById('servicio').innerHTML = '<option value="">Seleccione un servicio</option>';
+
+            if (categoriaId) {
+                ticketContainer.classList.remove('hidden');
+            } else {
+                ticketContainer.classList.add('hidden');
+                // Limpia selección de tipo de ticket
+                document.querySelectorAll('input[name="tipo_ticket"]').forEach(radio => radio.checked = false);
+            }
+        }
+
         async function cargarServicios() {
             const categoriaId = document.getElementById('categoria').value;
             const tipoTicket = document.querySelector('input[name="tipo_ticket"]:checked')?.value;
@@ -301,7 +84,8 @@ unset($_SESSION['error']); // Limpiar el error después de mostrarlo
         }
     </script>
 </head>
-<body>
+
+<body class="ticket-form">
     <div class="container">
         <div class="header">
             <h1>Crear Ticket</h1>
@@ -319,7 +103,7 @@ unset($_SESSION['error']); // Limpiar el error después de mostrarlo
                 <!-- Selección de categoría -->
                 <div class="form-group">
                     <label for="categoria">Categoría:</label>
-                    <select id="categoria" name="categoria" required>
+                    <select id="categoria" name="categoria" required onchange="cargarTicketTipo()">
                         <option value="">Seleccione una categoría</option>
                         <?php foreach ($categorias as $categoria): ?>
                             <option value="<?php echo htmlspecialchars($categoria['id_categoria']); ?>">
@@ -330,7 +114,7 @@ unset($_SESSION['error']); // Limpiar el error después de mostrarlo
                 </div>
 
                 <!-- Selección del tipo de ticket -->
-                <div class="form-group">
+                <div id="ticket-container" class="form-group hidden">
                     <label>Tipo de Ticket:</label>
                     <div class="radio-group">
                         <label class="radio-option">
@@ -366,4 +150,5 @@ unset($_SESSION['error']); // Limpiar el error después de mostrarlo
         </div>
     </div>
 </body>
+
 </html>
