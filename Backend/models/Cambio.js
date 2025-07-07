@@ -32,11 +32,20 @@ const Cambio = sequelize.define('Cambio', {
         type: DataTypes.STRING(50),
         allowNull: false,
     },
+    id_servicio: { // Nuevo campo
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        references: {
+            model: 'servicios',
+            key: 'id_servicio',
+        },
+    },
 }, {
     tableName: 'cambios',
     timestamps: false,
 });
 
 Cambio.belongsTo(Usuario, { foreignKey: 'id_tecnico', targetKey: 'id_usuario' });
+Cambio.belongsTo(Servicio, { foreignKey: 'id_servicio', targetKey: 'id_servicio' });
 
 module.exports = Cambio;

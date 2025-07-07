@@ -8,6 +8,8 @@ const ticketRoutes = require('./routes/ticketRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const articuloRoutes = require('./routes/articuloRoutes');
 const activoRoutes = require('./routes/activoRoutes');
+const cambioRoutes = require('./routes/cambioRoutes');
+
 
 require('./models/associations');
 
@@ -24,6 +26,7 @@ app.use('/api/tickets', ticketRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/articulos', articuloRoutes);
 app.use('/api/activos', activoRoutes);
+app.use('/api/cambios', cambioRoutes);
 
 
 // Conectar a la base de datos y luego iniciar el servidor

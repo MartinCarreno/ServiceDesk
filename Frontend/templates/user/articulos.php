@@ -1,7 +1,8 @@
-
 <?php
 include '../../includes/session_validation.php';
+?>
 
+<?php
 // Obtener categorías principales
 $catApiUrl = 'http://localhost:3000/api/categorias';
 $artApiUrl = 'http://localhost:3000/api/articulos';

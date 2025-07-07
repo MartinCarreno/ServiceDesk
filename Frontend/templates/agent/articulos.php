@@ -1,4 +1,3 @@
-
 <?php
 include '../../includes/session_validation.php';
 

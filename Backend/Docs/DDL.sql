@@ -70,6 +70,8 @@ CREATE TABLE cambios (
     riesgo_cambio VARCHAR(50),
     estado_cambio VARCHAR(50),
     id_tecnico BIGINT,
+    id_servicio BIGINT, -- Nuevo campo para relacionar con servicios
+    CONSTRAINT fk_servicio_cambio FOREIGN KEY (id_servicio) REFERENCES servicios(id_servicio),
     CONSTRAINT fk_tecnico_cambio FOREIGN KEY (id_tecnico) REFERENCES usuarios(id_usuario)
 );
 
