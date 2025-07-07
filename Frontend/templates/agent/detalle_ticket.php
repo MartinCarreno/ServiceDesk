@@ -42,6 +42,7 @@ if ($id_ticket) {
                 <li><a href="../agent/tickets_finalizados.php">Tickets finalizados</a></li>
                 <li><a href="../agent/articulos.php">Articulos</a></li>
                 <li><a href="../create_ticket_form.php">Crear Ticket</a></li>
+                <li><a href="../agent/crear_activo.php">Agregar Activo</a></li>
                 <li><a href="../logout.php">Cerrar Sesión</a></li>
             </ul>
         </nav>
