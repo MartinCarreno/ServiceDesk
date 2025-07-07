@@ -75,9 +75,39 @@ if ($id_ticket) {
                         <p><strong>Descripción:</strong> <?php echo htmlspecialchars($ticket['desc_ticket']); ?></p>
                     </div>
                     <div class="ticket-detail-section">
-                        <p><strong>Fecha de creación:</strong> <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?></p>
-                        <p><strong>Fecha límite SLA:</strong> <?php echo htmlspecialchars($ticket['fe_lim_ticket']); ?></p>
-                        <p><strong>Fecha de finalización:</strong> <?php echo htmlspecialchars($ticket['fe_fin_ticket'] ?? 'No finalizado'); ?></p>
+                        <p><strong>Fecha de creación:</strong>
+                            <?php
+                            if (!empty($ticket['fe_ini_ticket'])) {
+                                $dt = new DateTime($ticket['fe_ini_ticket'], new DateTimeZone('UTC'));
+                                $dt->setTimezone(new DateTimeZone('America/Santiago'));
+                                echo $dt->format('Y-m-d H:i');
+                            } else {
+                                echo 'No disponible';
+                            }
+                            ?>
+                        </p>
+                        <p><strong>Fecha límite SLA:</strong>
+                            <?php
+                            if (!empty($ticket['fe_lim_ticket'])) {
+                                $dt = new DateTime($ticket['fe_lim_ticket'], new DateTimeZone('UTC'));
+                                $dt->setTimezone(new DateTimeZone('America/Santiago'));
+                                echo $dt->format('Y-m-d H:i');
+                            } else {
+                                echo 'No disponible';
+                            }
+                            ?>
+                        </p>
+                        <p><strong>Fecha de finalización:</strong>
+                            <?php
+                            if (!empty($ticket['fe_fin_ticket'])) {
+                                $dt = new DateTime($ticket['fe_fin_ticket'], new DateTimeZone('UTC'));
+                                $dt->setTimezone(new DateTimeZone('America/Santiago'));
+                                echo $dt->format('Y-m-d H:i');
+                            } else {
+                                echo 'No finalizado';
+                            }
+                            ?>
+                        </p>
                         <p>
                             <strong>Cumplió SLA:</strong>
                             <?php
