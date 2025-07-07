@@ -8,9 +8,14 @@ include '../../includes/session_validation.php'; // Validar sesión
         $por_estado = $estadisticas['por_estado'] ?? [];
         $por_categoria = $estadisticas['por_categoria'] ?? [];
 
-// var_dump($por_estado);
-// var_dump($por_categoria);
-// exit;
+        // Obtener el total de tickets
+        $url_total = 'http://localhost:3000/api/tickets/count';
+        $response_total = @file_get_contents($url_total);
+        $tickets_total = $response_total ? json_decode($response_total, true) : [];
+        $total_tickets = isset($tickets_total['total']) ? $tickets_total['total'] : 0;
+//var_dump($por_estado);
+//var_dump($por_categoria);
+//exit;
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +57,14 @@ include '../../includes/session_validation.php'; // Validar sesión
             <h1>📊 Dashboard de Tickets</h1>
             <p>Visualiza el estado y categorías de los tickets en tiempo real.</p>
         </div>
-        <div class="section" style="display: flex; flex-wrap: wrap; gap: 2rem;">
+        
+        <div class="stats-grid" style="display: flex; flex-wrap: wrap; gap: 2rem;">
+            <div>
+                <div class="stat-card">
+                    <div class="stat-number"><?php echo $total_tickets; ?></div>
+                    <div class="stat-label">Total de Tickets</div>
+                </div>
+            </div>
             <div id="chart_estado" style="width: 500px; height: 350px; flex: 1 1 350px;"></div>
             <div id="chart_categoria" style="width: 500px; height: 350px; flex: 1 1 350px;"></div>
         </div>
@@ -319,17 +331,23 @@ function drawCharts() {
 
     // Tickets por Categoría
     var dataCategoria = google.visualization.arrayToDataTable([
-        ['Categoría', 'Cantidad'],
-        <?php
-        if (count($por_categoria) === 0) {
-            echo "['Sin datos', 0],";
-        } else {
-            foreach ($por_categoria as $cat => $cantidad) {
-                echo "['" . addslashes($cat) . "', $cantidad],";
-            }
+    ['Categoría', 'Cantidad'],
+    <?php
+    // Mapeo de id_sla a nombre
+    $sla_labels = [
+        1 => 'Incidente',
+        2 => 'Requerimiento'
+    ];
+    if (count($por_categoria) === 0) {
+        echo "['Sin datos', 0],";
+    } else {
+        foreach ($por_categoria as $cat => $cantidad) {
+            $label = isset($sla_labels[$cat]) ? $sla_labels[$cat] : $cat;
+            echo "['" . addslashes($label) . "', $cantidad],";
         }
-        ?>
-    ]);
+    }
+    ?>
+]);
     var optionsCategoria = {
         title: 'Tickets por SLA',
         legend: { position: 'bottom' },

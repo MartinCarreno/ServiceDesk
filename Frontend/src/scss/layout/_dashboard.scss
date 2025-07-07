@@ -74,6 +74,8 @@ header {
   gap: 1rem;
   margin: 2rem 0;
   .stat-card {
+    width: 100%;
+    height: fit-content;
     background: white;
     border-radius: 15px;
     padding: 1.5rem;

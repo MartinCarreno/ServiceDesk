@@ -3,7 +3,20 @@ const router = express.Router();
 const Ticket = require('../models/Ticket');
 const moment = require('moment'); //con moment podemos convertir la fecha al formato local
 
+// Ruta para contar el total de tickets
+router.get('/count', async (req, res) => {
+    try {
+        const Ticket = require('../models/Ticket');
+        const total = await Ticket.count();
+        res.json({ total });
+    } catch (error) {
+        console.error('Error al contar tickets:', error);
+        res.status(500).json({ msg: 'Error al contar tickets' });
+    }
+});
+
 // Endpoint para crear un ticket
+
 router.post('/create', async (req, res) => {
     try {
         const { usuario_id, categoria_id, servicio_id, descripcion, tipo_ticket, sla_id } = req.body;

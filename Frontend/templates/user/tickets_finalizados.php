@@ -19,7 +19,7 @@ include '../../includes/session_validation.php'; // Validar sesión
                 <li><a href="../user/user_dashboard.php">Inicio</a></li>
                 <li><a href="../user/mis_tickets.php">Mis Ticket</a></li>
                 <li><a href="../user/tickets_finalizados.php">Tickets finalizados</a></li>
-                <li><a href="../agent/mis_tickets.php">Articulos</a></li>
+                <li><a href="../user/articulos.php">Articulos</a></li>
                 <li><a href="../create_ticket_form.php">Crear Ticket</a></li>
                 <li><a href="../logout.php">Cerrar Sesión</a></li>
             </ul>

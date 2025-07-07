@@ -423,6 +423,8 @@ header ul li a:hover {
   margin: 2rem 0;
 }
 .stats-grid .stat-card {
+  width: 100%;
+  height: fit-content;
   background: white;
   border-radius: 15px;
   padding: 1.5rem;
