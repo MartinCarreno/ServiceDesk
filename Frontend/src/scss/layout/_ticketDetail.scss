@@ -1,0 +1,59 @@
+.ticket-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(102, 126, 234, 0.10);
+  padding: 2.5rem 2rem;
+  margin: 2rem auto;
+  max-width: 540px;
+  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.3s;
+
+  h2 {
+    color: #667eea;
+    font-size: 2.6rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  p {
+    font-size: 1.7rem;
+    margin: 1.2rem 0;
+    color: #333;
+
+    strong {
+      color: #764ba2;
+      font-weight: 700;
+      min-width: 140px;
+      display: inline-block;
+    }
+  }
+
+  .sla-ok {
+    color: #51cf66;
+    font-weight: bold;
+  }
+  .sla-fail {
+    color: #ff6b6b;
+    font-weight: bold;
+  }
+  .sla-na {
+    color: #999;
+    font-style: italic;
+  }
+
+  .ticket-detail-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #ececec;
+  }
+}
+
+@media (max-width: 600px) {
+  .ticket-detail-card {
+    padding: 1.2rem 0.7rem;
+    max-width: 98vw;
+    h2 { font-size: 2rem; }
+    p { font-size: 1.2rem; }
+  }
+}

@@ -8,11 +8,18 @@
   box-sizing: border-box;
 }
 
+
+
 body.ticket-form {
   font-family: $fuente_principal;
   background: $background-color-gradient-azul;
   min-height: 100vh;
   padding: 20px;
+
+  h1 {
+    font-weight: bold;
+  }
+
 }
 
 .container {

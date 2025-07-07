@@ -24,7 +24,7 @@ const Articulo = sequelize.define('Articulo', {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    fecha_creacion: {
+    fecha_articulo: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
     },
@@ -32,9 +32,9 @@ const Articulo = sequelize.define('Articulo', {
       type: DataTypes.ENUM('agente', 'publico'),
       defaultValue: 'publico'
     },
-    estado_publicacion: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
+    estado_articulo: {
+      type: DataTypes.ENUM('pendiente', 'publicado', 'obsoleto'),
+      defaultValue: 'pendiente'
     },
     url_documento: {
       type: DataTypes.TEXT,

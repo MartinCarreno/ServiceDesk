@@ -162,4 +162,47 @@ router.post('/finalize/:id', async (req, res) => {
 });
 
 
+// Endpoint para obtener el detalle de un ticket por ID
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const Ticket = require('../models/Ticket');
+        const Usuario = require('../models/Usuario');
+        const Servicio = require('../models/Servicio');
+
+        // Usa los alias EXACTOS definidos en tus asociaciones
+        const ticket = await Ticket.findOne({
+            where: { id_ticket: id },
+            include: [
+                { model: Usuario, as: 'Usuario', attributes: ['id_usuario', 'nom_usuario', 'ape_usuario', 'email_usuario'] },
+                { model: Servicio, as: 'Servicio', attributes: ['id_servicio', 'nom_servicio'] },
+                { model: Usuario, as: 'Agente', attributes: ['id_usuario', 'nom_usuario', 'ape_usuario', 'email_usuario'], required: false }
+            ]
+        });
+
+        if (!ticket) {
+            return res.status(404).json({ msg: 'Ticket no encontrado' });
+        }
+
+        res.json({
+            id_ticket: ticket.id_ticket,
+            estado_ticket: ticket.estado_ticket,
+            tipo_ticket: ticket.tipo_ticket,
+            desc_ticket: ticket.desc_ticket,
+            fe_ini_ticket: ticket.fe_ini_ticket,
+            fe_lim_ticket: ticket.fe_lim_ticket,
+            fe_fin_ticket: ticket.fe_fin_ticket,
+            cump_sla: ticket.cump_sla,
+            mensaje_finalizacion: ticket.mensaje_finalizacion,
+            usuario: ticket.Usuario ? `${ticket.Usuario.nom_usuario} ${ticket.Usuario.ape_usuario}` : ticket.id_usuario,
+            servicio: ticket.Servicio ? ticket.Servicio.nom_servicio : ticket.id_servicio,
+            agente: ticket.Agente ? `${ticket.Agente.nom_usuario} ${ticket.Agente.ape_usuario}` : ticket.id_agente
+        });
+    } catch (error) {
+        console.error('Error al obtener el ticket:', error);
+        res.status(500).json({ msg: 'Error al obtener el ticket' });
+    }
+});
+
+
 module.exports = router;

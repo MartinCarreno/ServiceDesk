@@ -15,6 +15,7 @@ body {
   font-family: "Lato", sans-serif;
   font-size: 1.6rem;
   line-height: 1.8;
+  margin: 30px;
 }
 
 p {
@@ -75,6 +76,7 @@ body {
   font-family: "Lato", sans-serif;
   font-size: 1.6rem;
   line-height: 1.8;
+  margin: 30px;
 }
 
 p {
@@ -681,6 +683,7 @@ body {
   font-family: "Lato", sans-serif;
   font-size: 1.6rem;
   line-height: 1.8;
+  margin: 30px;
 }
 
 p {
@@ -738,6 +741,9 @@ body.ticket-form {
   background: linear-gradient(360deg, rgb(2, 0, 36) 0%, rgb(9, 9, 121) 35%, rgb(0, 212, 255) 100%);
   min-height: 100vh;
   padding: 20px;
+}
+body.ticket-form h1 {
+  font-weight: bold;
 }
 
 .container {
@@ -932,6 +938,133 @@ body.ticket-form {
   .button-group {
     flex-direction: column;
     align-items: center;
+  }
+}
+.ticket-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(102, 126, 234, 0.1);
+  padding: 2.5rem 2rem;
+  margin: 2rem auto;
+  max-width: 540px;
+  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.3s;
+}
+.ticket-container h2 {
+  color: #667eea;
+  font-size: 2.6rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+.ticket-container p {
+  font-size: 1.7rem;
+  margin: 1.2rem 0;
+  color: #333;
+}
+.ticket-container p strong {
+  color: #764ba2;
+  font-weight: 700;
+  min-width: 140px;
+  display: inline-block;
+}
+.ticket-container .sla-ok {
+  color: #51cf66;
+  font-weight: bold;
+}
+.ticket-container .sla-fail {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+.ticket-container .sla-na {
+  color: #999;
+  font-style: italic;
+}
+.ticket-container .ticket-detail-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #ececec;
+}
+
+@media (max-width: 600px) {
+  .ticket-detail-card {
+    padding: 1.2rem 0.7rem;
+    max-width: 98vw;
+  }
+  .ticket-detail-card h2 {
+    font-size: 2rem;
+  }
+  .ticket-detail-card p {
+    font-size: 1.2rem;
+  }
+}
+.accordion-container {
+  max-width: 700px;
+  margin: 2rem auto;
+}
+
+.accordion-item {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+
+.accordion-header {
+  width: 100%;
+  background: #2e5fe7;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 600;
+  padding: 1.2rem 2rem;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.accordion-header[aria-expanded=true] + .accordion-body {
+  max-height: 1000px;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+}
+
+.accordion-icon {
+  font-size: 1.3rem;
+  margin-left: 1rem;
+  transition: transform 0.2s;
+}
+
+.accordion-body {
+  background: #f8f9fa;
+  color: #333;
+  padding: 1.1rem 2rem;
+  font-size: 1.3rem;
+  border-top: 1px solid #ececec;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.accordion-body p {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .accordion-container {
+    max-width: 98vw;
+    padding: 0 0.5rem;
+  }
+  .accordion-header, .accordion-body {
+    padding: 1rem;
+    font-size: 1.1rem;
   }
 }
 

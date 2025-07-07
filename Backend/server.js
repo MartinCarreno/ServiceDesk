@@ -6,6 +6,8 @@ const authRoutes = require('./routes/authRoutes'); // Importar las rutas de aute
 const serviceRoutes = require('./routes/serviceRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const articuloRoutes = require('./routes/articuloRoutes');
+
 require('./models/associations');
 
 dotenv.config();
@@ -19,6 +21,7 @@ app.use('/api/auth', authRoutes); // Usar las rutas de autenticación
 app.use('/api/services', serviceRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/articulos', articuloRoutes);
 
 // Conectar a la base de datos y luego iniciar el servidor
 sequelize.authenticate()

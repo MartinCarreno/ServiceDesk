@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Usuario = require('./Usuario');
 const Articulo = require('./Articulo');
+const Servicio = require('./Servicio');
 const Sla = require('./Sla');
 
 const Ticket = sequelize.define('Ticket', {
@@ -9,6 +10,14 @@ const Ticket = sequelize.define('Ticket', {
         type: DataTypes.BIGINT,
         primaryKey: true,
         autoIncrement: true,
+    },
+    id_servicio: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+    references: {
+        model: 'servicios',
+        key: 'id_servicio',
+    },
     },
     tipo_ticket: {
         type: DataTypes.STRING(50),
@@ -46,15 +55,16 @@ const Ticket = sequelize.define('Ticket', {
     mensaje_finalizacion: {
         type: DataTypes.TEXT,
         allowNull: true,
-    }
+    },
 }, {
     tableName: 'tickets',
     timestamps: false,
 });
 
 Ticket.belongsTo(Usuario, { foreignKey: 'id_usuario', targetKey: 'id_usuario' });
-Ticket.belongsTo(Usuario, { foreignKey: 'id_agente', targetKey: 'id_usuario' });
+Ticket.belongsTo(Usuario, { as: 'Agente', foreignKey: 'id_agente', targetKey: 'id_usuario' });
 Ticket.belongsTo(Articulo, { foreignKey: 'id_articulo', targetKey: 'id_articulo' });
+Ticket.belongsTo(Servicio, { as: 'Servicio', foreignKey: 'id_servicio' });
 Ticket.belongsTo(Sla, { foreignKey: 'id_sla', targetKey: 'id_sla' });
 
 module.exports = Ticket;

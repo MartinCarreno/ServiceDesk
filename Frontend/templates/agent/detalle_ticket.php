@@ -1,5 +1,24 @@
 <?php
 include '../../includes/session_validation.php'; // Validar sesión
+
+// 1. Obtener el id_ticket desde GET
+$id_ticket = $_GET['id_ticket'] ?? null;
+$ticket = null;
+$error = null;
+
+if ($id_ticket) {
+    // 2. Consultar el ticket al backend
+    $url = "http://localhost:3000/api/tickets/$id_ticket";
+    $response = @file_get_contents($url);
+    if ($response) {
+        $ticket = json_decode($response, true);
+    } else {
+        $error = "No se pudo obtener la información del ticket.";
+    }
+} else {
+    $error = "No se proporcionó un ID de ticket.";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -34,51 +53,49 @@ include '../../includes/session_validation.php'; // Validar sesión
         </a>
     </div>
 
-    <main class="main-content" >
+    <main class="main-content">
         <section class="section fade-in">
             <div class="section-header">
-                Ticket 
+                Detalle del Ticket
             </div>
-            <div class="tickets-container">
-                <div class="ticket-grid">
-                    <?php if (is_array($ticketsPendientes) && !empty($ticketsPendientes)): ?>
-                        <?php foreach ($ticketsPendientes as $ticket): ?>
-                            <div class="ticket-card priority-<?php echo strtolower($ticket['prioridad'] ?? 'medium'); ?>">
-                                <div class="ticket-header">
-                                    <div class="ticket-id">#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></div>
-                                    <div class="ticket-status status-<?php echo htmlspecialchars($ticket['estado_ticket']); ?>">
-                                        <?php echo ucfirst($ticket['estado_ticket']); ?>
-                                    </div>
-                                </div>
-                                <div class="ticket-info">
-                                    <div class="info-item">
-                                        <div class="info-label">Usuario</div>
-                                        <div class="info-value"><?php echo htmlspecialchars($ticket['usuario'] ?? $ticket['id_usuario'] ?? 'Desconocido'); ?></div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Servicio</div>
-                                        <div class="info-value"><?php echo htmlspecialchars($ticket['servicio'] ?? $ticket['id_sla'] ?? 'Desconocido'); ?></div>
-                                    </div>
-                                </div>
-                                <div class="ticket-description">
-                                    <?php echo htmlspecialchars($ticket['desc_ticket']); ?>
-                                </div>
-                                <div class="timestamp">
-                                    <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
-                                </div>
-                                <div class="ticket-actions">
-                                    <a href="../../includes/assing_ticket.php?ticket_id=<?php echo $ticket['id_ticket']; ?>" class="btn btn-primary">👨‍💼 Atender</a>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="empty-state">
-                            <div class="empty-state-icon">📋</div>
-                            <h3>No hay tickets disponibles</h3>
-                            <p>Cuando crees nuevos tickets, aparecerán aquí</p>
-                        </div>
-                    <?php endif; ?>
-                </div>
+            <div class="ticket-container">
+                <?php if ($error): ?>
+                    <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
+                <?php elseif ($ticket): ?>
+                    <h2>#TK-<?php echo htmlspecialchars($ticket['id_ticket']); ?></h2>
+                    <div class="ticket-detail-section">
+                        <p><strong>Estado:</strong> <?php echo ucfirst(htmlspecialchars($ticket['estado_ticket'])); ?></p>
+                        <p><strong>Tipo:</strong> <?php echo ucfirst(htmlspecialchars($ticket['tipo_ticket'])); ?></p>
+                        <p><strong>Usuario:</strong> <?php echo htmlspecialchars($ticket['usuario'] ?? $ticket['id_usuario'] ?? 'Desconocido'); ?></p>
+                        <p><strong>Servicio:</strong> <?php echo htmlspecialchars($ticket['servicio'] ?? $ticket['id_servicio'] ?? 'Desconocido'); ?></p>
+                        <p><strong>Agente asignado:</strong> <?php echo htmlspecialchars($ticket['agente'] ?? $ticket['id_agente'] ?? 'No asignado'); ?></p>
+                    </div>
+                    <div class="ticket-detail-section">
+                        <p><strong>Descripción:</strong> <?php echo htmlspecialchars($ticket['desc_ticket']); ?></p>
+                    </div>
+                    <div class="ticket-detail-section">
+                        <p><strong>Fecha de creación:</strong> <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?></p>
+                        <p><strong>Fecha límite SLA:</strong> <?php echo htmlspecialchars($ticket['fe_lim_ticket']); ?></p>
+                        <p><strong>Fecha de finalización:</strong> <?php echo htmlspecialchars($ticket['fe_fin_ticket'] ?? 'No finalizado'); ?></p>
+                        <p>
+                            <strong>Cumplió SLA:</strong>
+                            <?php
+                            if (isset($ticket['cump_sla'])) {
+                                $slaClass = $ticket['cump_sla'] ? 'sla-ok' : 'sla-fail';
+                                echo "<span class=\"$slaClass\">" . ($ticket['cump_sla'] ? '✅ Sí' : '❌ No') . "</span>";
+                            } else {
+                                echo '<span class="sla-na">No aplica</span>';
+                            }
+                            ?>
+                        </p>
+                        <p><strong>Mensaje de resolución:</strong> <?php echo htmlspecialchars($ticket['mensaje_finalizacion'] ?? 'No hay mensaje'); ?></p>
+                    </div>
+                <?php else: ?>
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No se encontró el ticket</h3>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
     </main>

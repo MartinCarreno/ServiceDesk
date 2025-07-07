@@ -37,9 +37,9 @@ CREATE TABLE articulos (
     conten_articulo TEXT,
     cate_articulo VARCHAR(100),
     subcate_articulo VARCHAR(100),
-    fecha_articulo DATE,
+    fecha_articulo TIMESTAMP,
     visibilidad VARCHAR(20) CHECK (visibilidad IN ('agente', 'publico')) DEFAULT 'publico',
-    estado_articulo VARCHAR(20) CHECK (estado_articulo IN ('pendiente', 'publicado', 'obsoleto')) DEFAULT 'pendiente' -- Indica si el artículo está publicado o no
+    estado_articulo VARCHAR(20) CHECK (estado_articulo IN ('pendiente', 'publicado', 'obsoleto')) DEFAULT 'pendiente', -- Indica si el artículo está publicado o no
     url_documento TEXT,   --para links a otross documentos
     imagen_articulo TEXT, --Para imagenes en base64 o en url
     id_tecnico_creador BIGINT,
@@ -48,21 +48,21 @@ CREATE TABLE articulos (
 
 
 CREATE TABLE activos (
-    id_activo BIGINT PRIMARY KEY,
+    id_activo BIGSERIAL PRIMARY KEY,
     serial_activo VARCHAR(100),
     marca_activo VARCHAR(100),
     modelo_activo VARCHAR(100),
     cate_activo VARCHAR(100),
     subcate_activo VARCHAR(100),
     fec_compra DATE,
-    estado_activo VARCHAR(50),
+    estado_activo VARCHAR(50) CHECK (estado_activo IN ('operativo', 'obsoleto')) DEFAULT 'operativo',
     ubica_activo VARCHAR(100),
     id_usuario_resp BIGINT,
     CONSTRAINT fk_usuario_responsable FOREIGN KEY (id_usuario_resp) REFERENCES usuarios(id_usuario)
 );
 
 CREATE TABLE cambios (
-    id_cambio BIGINT PRIMARY KEY,
+    id_cambio BIGSERIAL PRIMARY KEY,
     titulo_cambio VARCHAR(200),
     desc_cambio TEXT,
     tipo_cambio VARCHAR(50),
@@ -137,53 +137,53 @@ INSERT INTO servicios (nom_servicio, desc_servicio, id_categoria) VALUES
 
 INSERT INTO articulos (
     id_articulo, titulo_articulo, conten_articulo, cate_articulo, subcate_articulo,
-    visibilidad, estado_publicacion, url_documento, imagen_articulo, id_tecnico_creador
+    fecha_articulo, visibilidad, estado_articulo, url_documento, imagen_articulo, id_tecnico_creador
 ) VALUES 
 (1, 'Cómo reiniciar un router de forma segura',
     'Para reiniciar un router de forma segura, primero apague el dispositivo desde el botón de encendido, espere 10 segundos y vuelva a encenderlo. Esto soluciona la mayoría de problemas de conectividad.',
-    'Redes', 'Router', 'publico', TRUE,
+    'Redes', 'Router', NOW(), 'publico', 'publicado',
     'https://intranet.soporte.com/docs/reinicio_router.pdf',
     'https://intranet.soporte.com/img/reinicio_router.png',
     1),
 
 (2, 'Procedimiento para cambio de tóner en impresoras HP',
     'Abra la tapa superior de la impresora, retire el tóner usado y coloque el nuevo. Asegúrese de que esté correctamente insertado y cierre la tapa. Reinicie la impresora si es necesario.',
-    'Soporte de Hardware', 'Impresoras', 'publico', TRUE,
+    'Soporte de Hardware', 'Impresoras', NOW(), 'publico', 'publicado',
     'https://intranet.soporte.com/docs/cambio_toner.pdf',
     NULL,
     1),
 
 (3, 'Mantenimiento preventivo para notebooks',
     'Se recomienda realizar limpieza externa semanal y limpieza interna (ventiladores y disipadores) cada 6 meses. Use aire comprimido y revise actualizaciones de BIOS y drivers.',
-    'Soporte de Hardware', 'Notebook', 'publico', TRUE,
+    'Soporte de Hardware', 'Notebook', NOW(), 'publico', 'publicado',
     NULL,
     NULL,
     1),
 
 (4, 'Solución de problemas de conexión WiFi',
     'Verifique que el Access Point esté encendido. Revise que no haya conflictos de IP y asegúrese de estar usando la red correcta. Reinicie el adaptador de red si es necesario.',
-    'Redes', 'Access Point (WiFi)', 'publico', TRUE,
+    'Redes', 'Access Point (WiFi)', NOW(), 'publico', 'publicado',
     'https://intranet.soporte.com/docs/conexion_wifi.pdf',
     NULL,
     1),
 
 (5, 'Política de reemplazo de equipos obsoletos',
     'Los equipos declarados como "obsoletos" deben ser reportados al área de TI para su evaluación. Si el equipo no cumple con los requerimientos mínimos, se procederá a su reemplazo.',
-    'Gestión de Activos', 'Equipos obsoletos', 'agente', TRUE,
+    'Gestión de Activos', 'Equipos obsoletos', NOW(), 'agente', 'publicado',
     NULL,
     NULL,
     1),
 
 (6, 'Guía para instalación de impresoras en red',
     'Para instalar una impresora en red, acceda a "Dispositivos e impresoras" en Windows, seleccione "Agregar impresora", luego "La impresora deseada no está en la lista" y escriba la IP.',
-    'Soporte de Hardware', 'Impresoras', 'publico', TRUE,
+    'Soporte de Hardware', 'Impresoras', NOW(), 'publico', 'publicado',
     NULL,
     'https://intranet.soporte.com/img/instalacion_impresora.png',
     1),
 
 (7, 'Cómo identificar el número de serie de un PC',
     'El número de serie puede encontrarse en una etiqueta física en la parte trasera del PC o accediendo al símbolo del sistema (cmd) y escribiendo: wmic bios get serialnumber.',
-    'Inventario de Activos', 'PC', 'publico', TRUE,
+    'Inventario de Activos', 'PC', NOW(), 'publico', 'publicado',
     NULL,
     NULL,
     1);
@@ -191,3 +191,14 @@ INSERT INTO articulos (
 INSERT INTO sla (id_sla, nom_sla, tiempo_sla) VALUES
 (1, 'SLA Incidente', 8),
 (2, 'SLA Requerimiento', 24);
+
+
+-- Inserts de activos
+INSERT INTO activos (serial_activo, marca_activo, modelo_activo, cate_activo, subcate_activo, fec_compra, estado_activo, ubica_activo, id_usuario_resp)
+VALUES
+('PC-001', 'Dell', 'Optiplex 3080', 'Hardware', 'PC', '2022-01-15', 'operativo', 'Oficina 101', 1),
+('NB-002', 'HP', 'EliteBook 840', 'Hardware', 'Notebook', '2021-09-10', 'operativo', 'Oficina 102', 2),
+('IMP-003', 'Brother', 'HL-L2350DW', 'Hardware', 'Impresoras', '2020-05-20', 'operativo', 'Sala de impresión', 1),
+('SW-004', 'Cisco', 'SG350', 'Hardware', 'Switches', '2019-11-30', 'operativo', 'Rack principal', 3),
+('AP-005', 'Ubiquiti', 'UniFi AP AC', 'Hardware', 'Access Point', '2023-03-01', 'operativo', 'Pasillo 2do piso', 2),
+('SRV-006', 'Lenovo', 'ThinkSystem SR250', 'Hardware', 'Servidores', '2018-07-12', 'obsoleto', 'Data Center', 1);

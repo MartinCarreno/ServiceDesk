@@ -210,7 +210,7 @@ include '../../includes/session_validation.php'; // Validar sesión
                                     <?php echo htmlspecialchars($ticket['fe_ini_ticket']); ?>
                                 </div>
                                 <div class="ticket-actions">
-                                    <a href="detalle_ticket.php" class="btn btn-primary">👁️ Ver Detalles</a>
+                                    <a href="detalle_ticket.php?id_ticket=<?php echo $ticket['id_ticket']; ?>" class="btn btn-primary">👁️ Ver Detalles</a>
                                 </div>
                             </div>
                         <?php endforeach; ?>

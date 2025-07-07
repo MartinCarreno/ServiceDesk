@@ -33,7 +33,7 @@ const Activo = sequelize.define('Activo', {
         allowNull: false,
     },
     estado_activo: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.ENUM('operativo', 'obsoleto'),
         allowNull: false,
     },
     ubica_activo: {
