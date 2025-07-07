@@ -161,6 +161,44 @@ router.post('/finalize/:id', async (req, res) => {
     }
 });
 
+router.get('/estadisticas', async (req, res) => {
+    try {
+        const Ticket = require('../models/Ticket');
+
+        // Tickets por estado
+        const estados = await Ticket.findAll({
+            attributes: [
+                'estado_ticket',
+                [Ticket.sequelize.fn('COUNT', Ticket.sequelize.col('estado_ticket')), 'cantidad']
+            ],
+            group: ['estado_ticket']
+        });
+
+        // Tickets por categoría (ajusta el campo si es necesario)
+        const categorias = await Ticket.findAll({
+            attributes: [
+                'id_sla',
+                [Ticket.sequelize.fn('COUNT', Ticket.sequelize.col('id_sla')), 'cantidad']
+            ],
+            group: ['id_sla']
+        });
+
+        const por_estado = {};
+        estados.forEach(e => {
+            por_estado[e.estado_ticket] = parseInt(e.dataValues.cantidad, 10);
+        });
+
+        const por_categoria = {};
+        categorias.forEach(c => {
+            por_categoria[c.id_sla] = parseInt(c.dataValues.cantidad, 10);
+        });
+
+        res.json({ por_estado, por_categoria });
+    } catch (error) {
+        console.error('Error al obtener estadísticas:', error);
+        res.status(500).json({ msg: 'Error al obtener estadísticas' });
+    }
+});
 
 // Endpoint para obtener el detalle de un ticket por ID
 router.get('/:id', async (req, res) => {

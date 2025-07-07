@@ -1,5 +1,16 @@
 <?php
 include '../../includes/session_validation.php'; // Validar sesión
+// Llama a tu API REST para obtener estadísticas
+        $url = 'http://localhost:3000/api/tickets/estadisticas';
+        $response = @file_get_contents($url);
+        $estadisticas = $response ? json_decode($response, true) : [];
+
+        $por_estado = $estadisticas['por_estado'] ?? [];
+        $por_categoria = $estadisticas['por_categoria'] ?? [];
+
+// var_dump($por_estado);
+// var_dump($por_categoria);
+// exit;
 ?>
 
 <!DOCTYPE html>
@@ -10,6 +21,7 @@ include '../../includes/session_validation.php'; // Validar sesión
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/app.css">
     <title>Panel de Agente - Tickets</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body class="dashboard">
@@ -37,11 +49,16 @@ include '../../includes/session_validation.php'; // Validar sesión
 
     <main class="main-content">
         <div class="welcome-section fade-in">
-            <h1>👋 Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']['email'] ?? 'Invitado'); ?></h1>
-            <p>Panel de control de tickets - Gestiona y da seguimiento a todos los tickets del sistema</p>
+            <h1>📊 Dashboard de Tickets</h1>
+            <p>Visualiza el estado y categorías de los tickets en tiempo real.</p>
+        </div>
+        <div class="section" style="display: flex; flex-wrap: wrap; gap: 2rem;">
+            <div id="chart_estado" style="width: 500px; height: 350px; flex: 1 1 350px;"></div>
+            <div id="chart_categoria" style="width: 500px; height: 350px; flex: 1 1 350px;"></div>
         </div>
 
         <?php
+        
         // Tickets Pendientes
         $url = 'http://localhost:3000/api/tickets/pending';
         $response = @file_get_contents($url);
@@ -275,6 +292,52 @@ include '../../includes/session_validation.php'; // Validar sesión
     </main>
 
     <script>
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawCharts);
+
+function drawCharts() {
+    // Tickets por Estado
+    var dataEstado = google.visualization.arrayToDataTable([
+        ['Estado', 'Cantidad'],
+        <?php
+        if (count($por_estado) === 0) {
+            echo "['Sin datos', 0],";
+        } else {
+            foreach ($por_estado as $estado => $cantidad) {
+                echo "['" . addslashes($estado) . "', $cantidad],";
+            }
+        }
+        ?>
+    ]);
+    var optionsEstado = {
+        title: 'Tickets por Estado',
+        pieHole: 0.4,
+        colors: ['#667eea', '#ffd43b', '#51cf66', '#ff6b6b']
+    };
+    var chartEstado = new google.visualization.PieChart(document.getElementById('chart_estado'));
+    chartEstado.draw(dataEstado, optionsEstado);
+
+    // Tickets por Categoría
+    var dataCategoria = google.visualization.arrayToDataTable([
+        ['Categoría', 'Cantidad'],
+        <?php
+        if (count($por_categoria) === 0) {
+            echo "['Sin datos', 0],";
+        } else {
+            foreach ($por_categoria as $cat => $cantidad) {
+                echo "['" . addslashes($cat) . "', $cantidad],";
+            }
+        }
+        ?>
+    ]);
+    var optionsCategoria = {
+        title: 'Tickets por SLA',
+        legend: { position: 'bottom' },
+        colors: ['#667eea', '#764ba2', '#ffd43b', '#51cf66', '#ff6b6b']
+    };
+    var chartCategoria = new google.visualization.ColumnChart(document.getElementById('chart_categoria'));
+    chartCategoria.draw(dataCategoria, optionsCategoria);
+}
         // Animation on scroll
         const observerOptions = {
             threshold: 0.1,
