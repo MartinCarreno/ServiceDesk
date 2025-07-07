@@ -7,6 +7,7 @@ const serviceRoutes = require('./routes/serviceRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const articuloRoutes = require('./routes/articuloRoutes');
+const activoRoutes = require('./routes/activoRoutes');
 
 require('./models/associations');
 
@@ -22,6 +23,8 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/articulos', articuloRoutes);
+app.use('/api/activos', activoRoutes);
+
 
 // Conectar a la base de datos y luego iniciar el servidor
 sequelize.authenticate()

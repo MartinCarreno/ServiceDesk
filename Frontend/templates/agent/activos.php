@@ -34,6 +34,7 @@ try {
                 <li><a href="articulos.php">Artículos</a></li>
                 <li><a href="activos.php">Activos</a></li>
                 <li><a href="create_ticket_form.php">Crear Ticket</a></li>
+                <li><a href="../agent/crear_activo.php">Agregar Activo</a></li>
                 <li><a href="logout.php">Cerrar Sesión</a></li>
             </ul>
         </nav>
